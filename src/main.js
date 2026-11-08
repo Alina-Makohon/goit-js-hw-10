@@ -7,12 +7,10 @@ const form = document.querySelector('.form');
 const orderLog = document.querySelector('.order-log');
 
 let timerID;
-const makeOrder = ({ status, timeToDo }) => {
+const makeOrder = (timeToDo, shouldResolve) => {
   return new Promise((resolve, reject) => {
     timerID = setTimeout(() => {
-      if (status === 'fulfilled') {
-        console.log(status);
-
+      if (shouldResolve) {
         resolve(timeToDo);
       } else {
         reject(timeToDo);
@@ -37,7 +35,7 @@ form.addEventListener('submit', event => {
 
   const timeToDo = PREP_TIME[drink];
   const row = addOrderRow(drink);
-  makeOrder({ status, timeToDo })
+  makeOrder(timeToDo, status === 'fulfilled')
     .then(() => {
       row.classList = 'row-ok';
       row.textContent = `✅ ${drink} · готове · ${timeToDo} ms`;
